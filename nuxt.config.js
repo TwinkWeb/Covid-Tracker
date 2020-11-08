@@ -44,6 +44,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    ['nuxt-leaflet', { /* module options */ }],
   ],
   /*
   ** vuetify module configuration

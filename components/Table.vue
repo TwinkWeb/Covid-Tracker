@@ -13,6 +13,8 @@
                 <td> <strong>{{ item.cases }}</strong></td>
               </tr>
                </tbody>
+
+            
              </template>
          </v-simple-table>
     </div>
@@ -22,7 +24,8 @@
 export default {
     computed: {
         sortTableData() {
-            return this.$store.state.tableData.sort((a, b) => {
+            const sortedData = [...$store.state.tableData]
+            return sortedData.sort((a, b) => {
                 if(a.cases > b.cases) {
                     return -1
                 } else {

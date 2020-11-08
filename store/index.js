@@ -2,12 +2,9 @@ export const state = () => ({
     countries: [],
     selectedCountry: '',
     countryInfo: {},
-    tableData: {}
+    tableData: {},
+    mapCenter: [60, 100]
 })
-
-export const getters = {
-    sortedTableData: s => s.tableData
-}
 
 
 
@@ -23,6 +20,13 @@ export const mutations = {
     },
     setTableData(state, payload) {
         state.tableData = payload
+    },
+    setChartData(state, payload) {
+       state.chartData = payload
+    },
+    setMapCenter(state, payload) {
+        state.mapCenter = payload
+        console.log(state.mapCenter)
     }
 
 }
@@ -37,19 +41,25 @@ export const actions = {
      await fetch(url)
      .then(response => response.json())
      .then(data => {
+         if(context.state.selectedCountry != 'all') {
+            context.commit('setMapCenter', [data.countryInfo.lat, data.countryInfo.long])
+         }
         context.commit('setCountryInfo', data)
+        
      })
     },
    async setCountries(context) {
     await fetch("https://disease.sh/v3/covid-19/countries")
    .then((response) => response.json())
    .then((data) =>{
+
      const countries = data.map((country) => ({
        name: country.country,
-       value: country.countryInfo.iso2
+       value: country.countryInfo.iso2,
      }));
      context.commit('setTableData', data)
      context.commit('setCountries' , countries)
    })
-   }
-}
+   },
+
+}   
