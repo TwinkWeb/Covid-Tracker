@@ -3,17 +3,22 @@ export const state = () => ({
     selectedCountry: '',
     countryInfo: {},
     tableData: {},
-    mapCenter: [60, 100]
+    mapCenter: [60, 100],
+    cases: "deaths"
 })
 
 
 
 export const mutations = {
+    changeCase(state, payload) {
+     state.cases = payload
+    },
     selectCountry(state, payload) {
         state.selectedCountry = payload
     },
     setCountryInfo(state, payload) {
         state.countryInfo = payload
+  
     },
     setCountries(state, payload) {
         state.countries = payload
@@ -26,7 +31,6 @@ export const mutations = {
     },
     setMapCenter(state, payload) {
         state.mapCenter = payload
-        console.log(state.mapCenter)
     }
 
 }
@@ -43,7 +47,7 @@ export const actions = {
      .then(data => {
          if(context.state.selectedCountry != 'all') {
             context.commit('setMapCenter', [data.countryInfo.lat, data.countryInfo.long])
-         }
+         }  
         context.commit('setCountryInfo', data)
         
      })

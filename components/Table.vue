@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import numeral from "numeral";
 export default {
     computed: {
         sortTableData() {
@@ -32,7 +33,7 @@ export default {
                     return 1;
                 }
             })
-        }
+        },
     }
 }
 </script>

@@ -19,7 +19,8 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.2.0/dist/leaflet.css' },
     ]
   },
   /*
@@ -70,6 +71,7 @@ export default {
           secondary: 'f5f5fb',
           accent: 'f5f5fb',
           error: '#f5f5fb',
+          cases: '#cc1034'
         },
       }
     }

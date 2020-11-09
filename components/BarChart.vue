@@ -1,11 +1,12 @@
 
 
 <script>
-import { Line } from 'vue-chartjs'
+import { Line, mixins } from 'vue-chartjs'
 import numeral from "numeral";
 
 export default {
     extends: Line,
+    mixins: [mixins.reactiveProp],
     data() {
         return {
         downloads: [],
@@ -55,15 +56,22 @@ export default {
 }
         }
     },
+    watch: {
+  chartData () {
+    this.$data._chart.update()
+  }
+},
    async mounted() {
            await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
         .then((response) => response.json())
         .then((data) =>{
             let xArray = []
         let yArray = []
-      for(let date in data.cases) {
+        let lastDataPoint;
+      for(let date in data[this.$store.state.cases]) {
+        console.log(data[this.$store.state.cases])
         let  x = date;
-        let y = data['cases'][date]
+        let y = data[this.$store.state.cases][date]
         xArray.push(x)
         yArray.push(y)
          }

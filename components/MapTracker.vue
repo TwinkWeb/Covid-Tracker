@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div id="map-wrap" style="height: 100vh; width: 100%;">
+    <div id="map-wrap" style="height:400px; width: 100%;">
       <client-only>
-        <l-map class="app__map" :zoom="13" :center="center">
+       <l-map class="app__map" :zoom="3" :center="center">
           <l-tile-layer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"></l-tile-layer>
-          <!-- <l-marker :lat-lng="tracker"></l-marker> -->
-          <Circle
-          :center="[60, 100]"
-          color = "red"
-          fillColor = "#f03"
-          :fillOpacity ="0.5"
-          :radius ="50"
-          />
+        <l-circle v-for="country in $store.state.tableData"
+        :key="country.country"
+         :lat-lng="[country.countryInfo.lat, country.countryInfo.long]"
+         :color='casesTypeColors[$store.state.cases].rgb'
+         :fillColor='casesTypeColors[$store.state.cases].half_op'
+         :fillOpacity="0.5"
+         :radius="countRadius(country[$store.state.cases] , casesTypeColors[$store.state.cases].multiplier )">
+         </l-circle>
         </l-map>
       </client-only>
     </div>
@@ -19,28 +19,28 @@
 </template>
 
 <script>
-import { Circle ,Popup} from 'nuxt-leaflet'
 export default {
   data() {
     return {
+      
        casesTypeColors:{
   cases: {
     hex: "#CC1034",
     rgb: "rgb(204, 16, 52)",
     half_op: "rgba(204, 16, 52, 0.5)",
-    multiplier: 800,
+    multiplier: 300000,
   },
   recovered: {
     hex: "#7dd71d",
     rgb: "rgb(125, 215, 29)",
     half_op: "rgba(125, 215, 29, 0.5)",
-    multiplier: 1200,
+    multiplier: 300000,
   },
   deaths: {
     hex: "#fb4443",
     rgb: "rgb(251, 68, 67)",
     half_op: "rgba(251, 68, 67, 0.5)",
-    multiplier: 2000,
+    multiplier: 2000000,
   },
 }
     }
@@ -50,13 +50,12 @@ export default {
          type: Array,
          default: () => [60, 100]
      },
-    //  tracker: {
-    //    type: Array
-    //  }
-     
     },
-  mounted() {
-    console.log(this.$store.state.tableData)
+  methods: {
+    countRadius(number, multi) {
+      return Math.sqrt(number * multi)
+      
+    }
   }
 };
 </script>

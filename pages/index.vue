@@ -1,6 +1,6 @@
 <template>
 <v-container class="app d-flex justify-space-between flex-wrap">
-  <v-card :elevation="0" class=" primary" >
+  <v-card :elevation="0" class="flex-grow-1 primary" >
   <v-row class="app__countries">
   <v-col cols="6" >
   <h1>The Covid 19 Tracker</h1>
@@ -20,25 +20,26 @@
   </v-row>
 
   <v-row class="app__stats">
-    <v-col cols="4">
-      <info-box title="Coronavirus Cases" 
+    <v-col cols="4" @click="onChangeCase('cases')">
+      <info-box  title="Coronavirus Cases" 
       :cases="$store.state.countryInfo.todayCases" 
       :total="$store.state.countryInfo.cases" />
     </v-col>
-     <v-col cols="4">
-      <info-box  title="Recovered" 
+     <v-col cols="4" @click="onChangeCase('recovered')">
+      <info-box   title="Recovered" 
       :cases="$store.state.countryInfo.todayRecovered" 
       :total="$store.state.countryInfo.recovered"/>
     </v-col>
-     <v-col cols="4">
-      <info-box  title="Deaths" 
+     <v-col cols="4" @click="onChangeCase('deaths')">
+      <info-box   title="Deaths" 
       :cases="$store.state.countryInfo.todayDeaths" 
       :total="$store.state.countryInfo.deaths"/>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="12" class="map-wrap">
-      <MapTracker :center="$store.state.mapCenter" />
+      <MapTracker :center="$store.state.mapCenter"  />
+      <!-- -->
     </v-col>
   </v-row>
   </v-card >
@@ -74,9 +75,13 @@ export default {
    }),
    ...mapMutations({
      selectCountry: 'selectCountry',
+     changeCase: 'changeCase'
    }),
     onCountryChange() {
     this.onCountryChangeAction(this.value)
+   },
+   onChangeCase(caseType) {
+     this.changeCase(caseType)
    }
  },
 
