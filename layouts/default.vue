@@ -1,5 +1,5 @@
 <template>
-  <v-app light >
+  <v-app light>
     <v-main class="primary">
       <nuxt />
     </v-main>
@@ -8,5 +8,6 @@
 
 <script>
 export default {
+  name: 'LayoutDefault',
 }
 </script>
