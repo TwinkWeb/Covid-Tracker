@@ -4,7 +4,11 @@ export const state = () => ({
     countryInfo: {},
     tableData: {},
     mapCenter: [60, 100],
-    cases: "deaths"
+    cases: "cases",
+    chartData: {
+        downloads: null,
+        labels: null
+    }
 })
 
 
@@ -18,7 +22,6 @@ export const mutations = {
     },
     setCountryInfo(state, payload) {
         state.countryInfo = payload
-  
     },
     setCountries(state, payload) {
         state.countries = payload
@@ -26,11 +29,24 @@ export const mutations = {
     setTableData(state, payload) {
         state.tableData = payload
     },
-    setChartData(state, payload) {
-       state.chartData = payload
-    },
+   
     setMapCenter(state, payload) {
         state.mapCenter = payload
+    },
+    setChartData(state, payload) {
+        let xArray = []
+        let yArray = []
+        for(let date in payload[state.cases]) {
+            let  x = date;
+            let y = payload[state.cases][date]
+            xArray.push(x)
+            yArray.push(y)
+         }
+         
+         state.chartData.downloads = xArray
+         state.chartData.labels = yArray
+        //  console.log(state.chartData.labels)
+        //  console.log(state.chartData.downloads)
     }
 
 }
@@ -49,7 +65,7 @@ export const actions = {
             context.commit('setMapCenter', [data.countryInfo.lat, data.countryInfo.long])
          }  
         context.commit('setCountryInfo', data)
-        
+       
      })
     },
    async setCountries(context) {
@@ -65,5 +81,13 @@ export const actions = {
      context.commit('setCountries' , countries)
    })
    },
+
+   async setChartData(context) {
+    await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
+    .then((response) => response.json())
+    .then((data) =>{
+    context.commit('setChartData', data)
+    }) 
+   }
 
 }   

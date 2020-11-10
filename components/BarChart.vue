@@ -1,12 +1,18 @@
 
 
 <script>
-import { Line, mixins } from 'vue-chartjs'
+import {
+  Line,
+  mixins
+} from 'vue-chartjs'
+const {
+  reactiveProp
+} = mixins
 import numeral from "numeral";
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
     extends: Line,
-    mixins: [mixins.reactiveProp],
     data() {
         return {
         downloads: [],
@@ -56,39 +62,40 @@ export default {
 }
         }
     },
-    watch: {
+props: {
+    chartData: {
+      type: Array,
+      required: true
+    },
+    // chartLabels: {
+    //   type: Array,
+    //   required: true
+    // }
+},
+watch: {
   chartData () {
     this.$data._chart.update()
   }
 },
+methods: {
+ 
+},
+...mapActions({
+     setChartData: 'setChartData'
+   }),
    async mounted() {
-           await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-        .then((response) => response.json())
-        .then((data) =>{
-            let xArray = []
-        let yArray = []
-        let lastDataPoint;
-      for(let date in data[this.$store.state.cases]) {
-        console.log(data[this.$store.state.cases])
-        let  x = date;
-        let y = data[this.$store.state.cases][date]
-        xArray.push(x)
-        yArray.push(y)
-         }
-         this.downloads = xArray
-         this.labels = yArray
-        }) 
         this.renderChart({
-        labels: this.downloads,
+        labels: this.$store.state.chartData.downloads,
         datasets: [
           {
             label: 'cases',
             backgroundColor: "rgba(204, 16, 52, 0.5)",
             borderColor: "#CC1034",
-            data: this.labels
+            data: this.chartData
           }
         ]
       }, this.options)
+        
     }
 }
 </script>

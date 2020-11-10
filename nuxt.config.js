@@ -71,7 +71,8 @@ export default {
           secondary: 'f5f5fb',
           accent: 'f5f5fb',
           error: '#f5f5fb',
-          cases: '#cc1034'
+          cases: '#cc1034',
+          recoveredCases: '#89ff00'
         },
       }
     }
